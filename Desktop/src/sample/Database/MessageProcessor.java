@@ -1,6 +1,7 @@
 package sample.Database;
 
 import sample.I2PConnector.I2PConnector;
+import sample.Objects.Account;
 import sample.Objects.Message;
 
 import java.util.List;
@@ -8,7 +9,12 @@ import java.util.List;
 public class MessageProcessor {
     public static void listenForMessages() {
         Thread t = new Thread(() -> {
-
+            Account currentUser = I2PConnector.getMyAccount();
+            System.out.println(currentUser.destination);
+            int currentUserID = Database.get_id("user", currentUser.name);
+            if (currentUserID == 0) {
+                Database.add_user(currentUser.name, currentUser.destination, currentUser.destination, "", "");
+            }
             while (true) {
                 while (!(I2PConnector.haveNewMessages())) {
                     try {
