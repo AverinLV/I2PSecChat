@@ -26,10 +26,11 @@ public class MessageProcessor {
                 }
                 List<Message> newMessages = I2PConnector.getNewMessages();
                 for (Message message : newMessages) {
-                    Database.register_message(Database.getRoomIdbyHash(message.hashOfRoom), message.hashOfRoom, Database.get_id("user", message.from.name),
-                            Database.get_id("user", message.to.name), message.message, message.time);
-                    I2PConnector.sendMessage(message);
-
+                    if (!message.from.destination.equals(currentUser.destination)) {
+                        Database.register_message(Database.getRoomIdbyHash(message.hashOfRoom), message.hashOfRoom, Database.getIdByHash("user", message.from.destination),
+                                Database.getIdByHash("user", message.to.destination), message.message, message.time);
+                        I2PConnector.sendMessage(message);
+                    }
                 }
             }
         });

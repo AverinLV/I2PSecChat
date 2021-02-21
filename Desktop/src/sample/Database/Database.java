@@ -39,6 +39,21 @@ public class Database {
         create_contacts_table();
     }
 
+    public static int getIdByHash(String table_name, String hash){
+        int id = 0;
+        String get_id = String.format("select id from %s where private_key = '%s'", table_name, hash);
+        try (Connection connection = connect();
+             Statement statement = connection.createStatement();
+             ResultSet result = statement.executeQuery(get_id)) {
+
+            while (result.next()) {
+                id = result.getInt("id");
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } return id;
+    }
+
 //    public void print_all_tables() {
 //        System.out.println("Users:");
 //        System.out.println("Rooms:");

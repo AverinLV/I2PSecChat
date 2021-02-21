@@ -235,7 +235,9 @@ public class MainFrameLogic {
          */
         if (currentRoomId != 0) {
             notifyUsersAboutNewMember();
-            Database.add_user_to_room(currentRoomId, currentUserId);
+            Database.add_user(account.name, account.destination, account.destination, "", "");
+            int newMemberId = Database.get_id("user", account.name);
+            Database.add_user_to_room(currentRoomId, newMemberId);
         }
     }
 
